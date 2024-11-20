@@ -1,7 +1,12 @@
-import { Bot, DiscordGuildMemberAdd, DiscordGuildMemberRemove } from '@discordeno/bot';
+import { Bot, DiscordGuildMemberAdd, DiscordGuildMemberRemove, type DesiredPropertiesBehavior, type TransformersDesiredProperties } from '@discordeno/bot';
 import { BotWithProxyCache, ProxyCacheTypes } from './index.js';
 
-export const setupCacheEdits = <T extends ProxyCacheTypes, B extends Bot>(bot: BotWithProxyCache<T, B>) => {
+export const setupCacheEdits = <
+    T extends ProxyCacheTypes<Props, Behavior>,
+    Props extends TransformersDesiredProperties,
+    Behavior extends DesiredPropertiesBehavior,
+    B extends Bot<Props, Behavior>
+>(bot: BotWithProxyCache<T, Props, Behavior, B>) => {
     const { GUILD_MEMBER_ADD, GUILD_MEMBER_REMOVE } = bot.handlers;
 
     bot.handlers.GUILD_MEMBER_ADD = async (_, data, shardId) => {
